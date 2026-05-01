@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Istanbul — Mai 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+    <link rel="stylesheet" href="../style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-label">Carnets de voyage</div>
+        <div class="sidebar-title">Mes voyages</div>
+        <a href="../index.html" class="sidebar-home">← Accueil</a>
+    </div>
+    <nav class="sidebar-trips">
+        <a class="trip-item active" href="index.html">
+            <div class="trip-year">2026</div>
+            <div class="trip-name">Istanbul</div>
+            <div class="trip-meta">12 — 17 Mai · 5 jours</div>
+            <div class="trip-badge">En cours</div>
+        </a>
+        <a class="trip-item soon" href="../malaisie/index.html">
+            <div class="trip-year">2027</div>
+            <div class="trip-name">Malaisie</div>
+            <div class="trip-meta">Kuala Lumpur · Penang · Langkawi</div>
+            <div class="trip-badge">À venir</div>
+        </a>
+    </nav>
+</div>
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Ouvrir les voyages">
+    <svg viewBox="0 0 18 14" fill="none" stroke-width="1.8" stroke-linecap="round">
+        <line x1="0" y1="1" x2="18" y2="1"/>
+        <line x1="0" y1="7" x2="18" y2="7" class="bar-mid"/>
+        <line x1="0" y1="13" x2="18" y2="13"/>
+    </svg>
+</button>
+
+<nav>
+    <ul>
+        <li><a href="#jour1">Mardi 12</a></li>
+        <li><a href="#jour2">Mercredi 13</a></li>
+        <li><a href="#jour3">Jeudi 14</a></li>
+        <li><a href="#jour4">Vendredi 15</a></li>
+        <li><a href="#jour5">Samedi 16</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="background-image: url('img/hero.jpg')">
+    <div class="hero-content">
+        <div class="hero-eyebrow">Carnet de voyage · 2026</div>
+        <h1>Istanbul</h1>
+        <div class="hero-meta">
+            <span>12 — 17 Mai</span>
+            <div class="hero-divider"></div>
+            <span>5 jours · 2 continents</span>
+            <div class="hero-divider"></div>
+            <span>Sultanahmet · Kadıköy · Balat</span>
+        </div>
+    </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+    <div class="intro-label">Le parcours</div>
+    <h2>Entre l'Europe et l'Asie, l'histoire respire encore</h2>
+    <p>
+        Mosquées ottomanes et basiliques byzantines côte à côte, ferry sur le Bosphore au crépuscule,
+        ruelles colorées de Balat et bazars séculaires — cinq jours pour toucher l'âme d'une ville
+        qui fut capitale de trois empires.
+    </p>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 1 — Mardi 12 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour1">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">01</div>
+            <div class="day-meta">
+                <div class="day-label">Mardi 12 Mai</div>
+                <div class="day-title">Arrivée et immersion douce</div>
+                <div class="day-areas">Aéroport · Sultanahmet · Kumkapı</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map1"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">15h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">✈️ Atterrissage à Istanbul</div>
+                    <div class="tl-desc">Douane, récupération des bagages, puis navette Havaist ou taxi vers Aksaray. Comptez 1h30 de trajet pour rejoindre Kadırga — vous serez installés vers 17h30. <br>Navette Havaist jusqu'à Aksaray, puis 10 min à pied. Ou taxi direct — négociez le prix avant de monter, environ 35-45€.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">17h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚶 Première balade vers Sultanahmet</div>
+                    <div class="tl-desc">Remontez à pied depuis l'hôtel vers la Place Sultanahmet. La lumière de fin d'après-midi sur la Mosquée Bleue et Sainte-Sophie est magnifique à cette heure — c'est votre premier regard sur l'horizon qui vous accompagnera tout le séjour.</div>
+                    <a href="https://images.google.com/search?q=Sultanahmet+Place+Istanbul+coucher+soleil" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">19h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🐟 Soirée à Kumkapı</div>
+                    <div class="tl-desc">Le quartier des pêcheurs, juste à côté de l'hôtel. Très animé le soir avec ses restaurants de poisson et ses musiciens de rue. Laissez-vous guider par les odeurs et les voix des serveurs qui accrochent les passants.</div>
+                    <a href="https://images.google.com/search?q=Kumkapi+Istanbul+restaurants+poisson" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 2 — Mercredi 13 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour2">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">02</div>
+            <div class="day-meta">
+                <div class="day-label">Mercredi 13 Mai</div>
+                <div class="day-title">Les incontournables, avant la foule</div>
+                <div class="day-areas">Sultanahmet · Citerne · Sirkeci</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map2"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">10h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🕌 Sainte-Sophie en premier</div>
+                    <div class="tl-desc">Arrivez à l'ouverture pour éviter les groupes. Commencez par Sainte-Sophie, puis traversez la place vers la Mosquée Bleue. Deux visions du sacré, à 200 mètres l'une de l'autre.</div>
+                    <a href="https://images.google.com/search?q=Hagia+Sophia+interior+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🍽️ Déjeuner à l'Arasta Bazaar</div>
+                    <div class="tl-desc">Juste derrière la Mosquée Bleue, l'Arasta Bazaar abrite quelques bons restaurants à l'écart de la foule touristique. Meze, lahmacun, çorba — votre première vraie table turque.</div>
+                    <a href="https://images.google.com/search?q=Arasta+Bazaar+Istanbul+restaurant" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">13h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">💧 La Citerne Basilique</div>
+                    <div class="tl-desc">Descendez sous la ville. Cette citerne souterraine du VIe siècle, avec ses 336 colonnes reflétées dans l'eau et ses deux têtes de Méduse, est l'endroit le plus atmosphérique d'Istanbul — et l'un des plus insolites d'Europe.</div>
+                    <a href="https://images.google.com/search?q=Basilica+Cistern+Istanbul+Medusa" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">15h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚂 Gare de Sirkeci — Orient Express</div>
+                    <div class="tl-desc">Descendez à pied vers la mer jusqu'à la gare terminus de l'Orient Express. Son architecture Belle Époque de 1890, mélange de styles ottoman et européen, porte encore toute la nostalgie des grands voyages ferroviaires.</div>
+                    <a href="https://images.google.com/search?q=Sirkeci+station+Orient+Express+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/hagia-sophia.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Merveille byzantine · 537 apr. J-C.</div>
+                    <div class="mon-name">Sainte-Sophie</div>
+                    <div class="mon-desc">
+                        Pendant près de mille ans la plus grande église du monde, puis mosquée, puis musée, puis à nouveau mosquée depuis 2020 — son histoire résume à elle seule celle d'Istanbul. Son dôme de 55 mètres sans colonnes portantes reste un miracle d'ingénierie.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Le dôme qui "flotte" — effet lumineux unique</li>
+                        <li>Mosaïques byzantines du IXe siècle visibles à l'étage</li>
+                        <li>Arrivez à 10h, les groupes arrivent vers 11h</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Sainte+Sophie+interieur+mosaiques" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/cistern.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Souterrain mystérieux</div>
+                    <div class="mon-name">Citerne Basilique</div>
+                    <div class="mon-desc">
+                        Construite en 532 pour alimenter le Grand Palais en eau. 9 800 m² de galeries, 336 colonnes en marbre, et au fond de l'eau deux têtes de Méduse posées à l'envers dont on ne sait toujours pas l'origine exacte.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Fraîcheur bienvenue en mai (température constante)</li>
+                        <li>Les têtes de Méduse à la base des colonnes</li>
+                        <li>Lumières et reflets dans l'eau — très photographique</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Basilica+Cistern+columns+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/sirkeci.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Terminus mythique · 1890</div>
+                    <div class="mon-name">Gare de l'Orient Express</div>
+                    <div class="mon-desc">
+                        Terminus oriental du train le plus légendaire du monde depuis Paris. L'architecture mêle arcs en fer à cheval ottomans et verrière Belle Époque. L'Agatha Christie y aurait imaginé son "Crime de l'Orient Express".
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Architecture unique en son genre</li>
+                        <li>Musée ferroviaire à l'intérieur</li>
+                        <li>Vue sur la mer de Marmara depuis les quais</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Sirkeci+gare+Orient+Express" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 3 — Jeudi 14 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour3">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">03</div>
+            <div class="day-meta">
+                <div class="day-label">Jeudi 14 Mai · Jour férié</div>
+                <div class="day-title">L'Asie et la brise marine</div>
+                <div class="day-areas">Eminönü · Bosphore · Kadıköy · Moda</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map3"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">09h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🕌 Mosquée Bleue — avant l'afflux touristique</div>
+                    <div class="tl-desc">Partez tôt pour profiter de la Mosquée Sultan Ahmed dans le calme du matin. Ses 20 000 carreaux d'Iznik d'un bleu cobalt inondent l'intérieur d'une lumière irréelle, ses six minarets dominent Sultanahmet — c'est l'un des rares monuments qui dépasse toujours les attentes.</div>
+                    <a href="https://images.google.com/search?q=Mosquee+Bleue+Istanbul+interieur+matin" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">10h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚶 Marche jusqu'à Eminönü</div>
+                    <div class="tl-desc">Depuis Sultanahmet, descendez à pied vers les quais d'Eminönü. Ce trajet de 20 minutes vous fait traverser le bazar aux épices, l'odeur de poisson grillé sur les barques-restaurants et le bruit continu des mouettes.</div>
+                    <a href="https://images.google.com/search?q=Eminonu+quais+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">11h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">⛴️ Ferry vers Kadıköy — Le moment du voyage</div>
+                    <div class="tl-desc">20 à 30 minutes sur le Bosphore avec un thé en main sur le pont supérieur. La silhouette de la ville qui s'éloigne — minarets, dômes, palais — est l'une des plus belles images qu'on rapporte d'Istanbul. Payez avec votre IstanbulKart.</div>
+                    <a href="https://images.google.com/search?q=ferry+Bosphore+Istanbul+vapur" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏘️ Exploration de Kadıköy et Moda</div>
+                    <div class="tl-desc">L'Istanbul asiatique, jeune et bohème. Marché aux poissons de Kadıköy, galeries d'art, cafés en terrasse, librairies indépendantes. Marchez ensuite le long de la mer jusqu'à Moda — le quartier le plus détendu de la ville.</div>
+                    <a href="https://images.google.com/search?q=Kadikoy+Moda+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">17h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌅 Retour au coucher du soleil</div>
+                    <div class="tl-desc">Reprenez le ferry au coucher de soleil. Cette fois, c'est la silhouette européenne qui se révèle à mesure que vous approchez d'Eminönü — encore plus spectaculaire dans la lumière orangée de fin de journée.</div>
+                    <a href="https://images.google.com/search?q=Istanbul+sunset+Bosphorus+ferry" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/blue-mosque.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">1616 · 6 minarets · 20 000 carreaux</div>
+                    <div class="mon-name">Mosquée Bleue</div>
+                    <div class="mon-desc">
+                        La Mosquée Sultan Ahmed est l'unique mosquée ottomane à posséder six minarets. Son intérieur, tapissé de 20 000 carreaux d'Iznik d'un bleu cobalt profond, lui a valu son surnom. Construite entre 1609 et 1616, elle fait face à Sainte-Sophie — un dialogue de quinze siècles.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Entrée gratuite — prévoir une tenue couverte</li>
+                        <li>Visite le matin tôt pour éviter la foule</li>
+                        <li>Vue imprenable sur Sainte-Sophie depuis le parvis</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Mosquee+Bleue+Sultan+Ahmed+Istanbul+interieur" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/moda.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Rive asiatique · Bord de mer</div>
+                    <div class="mon-name">Moda</div>
+                    <div class="mon-desc">
+                        Le quartier le plus détendu de la rive asiatique. Ses ruelles calmes, ses cafés en terrasse et sa promenade en bord de mer face aux îles des Princes en font le refuge préféré des Istanbuliotes qui cherchent à souffler loin du tumulte du centre.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Promenade le long de la mer — vue sur les Îles des Princes</li>
+                        <li>Cafés et glaciers dans les ruelles résidentielles</li>
+                        <li>Ambiance très locale, pratiquement sans touristes</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Moda+Istanbul+bord+de+mer+promenade" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/kadikoy.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Rive asiatique · Moderne & bohème</div>
+                    <div class="mon-name">Kadıköy</div>
+                    <div class="mon-desc">
+                        Là où vit l'Istanbul d'aujourd'hui. Bars branchés, galeries d'art contemporain, marchés couverts plein de saveurs, et Moda Park avec sa vue sur les îles des Princes. Un contrepoint parfait aux monuments historiques.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Le marché aux poissons (Balık Pazarı)</li>
+                        <li>Street art omniprésent dans les ruelles</li>
+                        <li>Quartier jeune et cosmopolite</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Kadikoy+marche+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 4 — Vendredi 15 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour4">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">04</div>
+            <div class="day-meta">
+                <div class="day-label">Vendredi 15 Mai</div>
+                <div class="day-title">Bazars et splendeur ottomane</div>
+                <div class="day-areas">Grand Bazar · Süleymaniye · Pont de Galata · Karaköy</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map4"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">10h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏪 Le Grand Bazar</div>
+                    <div class="tl-desc">À 15 minutes à pied de votre hôtel. Plus qu'un marché : un labyrinthe de 4 000 boutiques sous des voûtes centenaires. Ne cherchez pas à tout voir — perdez-vous, et découvrez les hans (caravansérails) cachés comme le Zincirli Han.</div>
+                    <a href="https://images.google.com/search?q=Grand+Bazaar+Istanbul+voutes" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">13h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🕌 Mosquée de Süleyman le Magnifique</div>
+                    <div class="tl-desc">Pour beaucoup, la plus belle mosquée d'Istanbul — et la moins fréquentée. Construite par l'architecte Sinan entre 1550 et 1557, son jardin offre une vue panoramique incomparable sur la Corne d'Or et les toits de la ville.</div>
+                    <a href="https://images.google.com/search?q=Suleymaniye+Mosque+Istanbul+jardin" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">15h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌉 Pont de Galata à pied</div>
+                    <div class="tl-desc">Traversez le Pont de Galata en regardant les dizaines de pêcheurs alignés sur les deux rives. En dessous, des restaurants de poisson à des prix raisonnables. La vue sur Sainte-Sophie depuis le milieu du pont est saisissante.</div>
+                    <a href="https://images.google.com/search?q=Galata+Bridge+pecheurs+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">16h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏙️ Karaköy et Tour de Galata</div>
+                    <div class="tl-desc">Le quartier branché d'Istanbul, avec ses galeries, ses cafés de spécialité et ses façades haussmanniennes du XIXe siècle. La Tour de Galata (XIVe siècle) domine tout le quartier — la vue du sommet vaut la montée.</div>
+                    <a href="https://images.google.com/search?q=Karakoy+Galata+tower+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/grand-bazaar.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">XVe siècle · 4 000 boutiques</div>
+                    <div class="mon-name">Grand Bazar</div>
+                    <div class="mon-desc">
+                        L'un des plus anciens marchés couverts du monde, en activité depuis 1461. 61 rues couvertes, 22 portes d'entrée, 4 000 boutiques. Mais la vraie découverte, ce sont les hans intérieurs — des caravansérails ouvrant sur des cours silencieuses.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Cherchez le Zincirli Han et le Sandal Bedesten</li>
+                        <li>Le marchandage est une pratique normale</li>
+                        <li>Café turc offert si vous regardez les tapis</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Grand+Bazaar+Istanbul+inside" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/suleymaniye.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Chef-d'œuvre de Sinan · 1557</div>
+                    <div class="mon-name">Mosquée Süleymaniye</div>
+                    <div class="mon-desc">
+                        L'architecte Sinan, qui bâtit plus de 350 monuments dans l'Empire ottoman, considérait cette mosquée comme son chef-d'œuvre. Moins fréquentée que la Mosquée Bleue, elle offre une visite plus sereine et une vue imprenable depuis son jardin.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Jardin avec tombeaux de Soliman et de Roxelane</li>
+                        <li>Vue panoramique sur la Corne d'Or</li>
+                        <li>Moins touristique — atmosphère de recueillement</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Suleymaniye+Mosque+interior+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/galata-bridge.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Corne d'Or · Karaköy</div>
+                    <div class="mon-name">Pont de Galata</div>
+                    <div class="mon-desc">
+                        Le pont qui relie la vieille Istanbul à la rive moderne. Sur ses garde-corps, des dizaines de pêcheurs lancent leurs lignes dans la Corne d'Or — une image intemporelle de la ville. En dessous, des restaurants de poisson plein de bruit et de vie.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Restaurants au niveau inférieur — moins chers</li>
+                        <li>Traversée idéale au coucher de soleil</li>
+                        <li>Vue sur Sainte-Sophie depuis le milieu</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Galata+Bridge+Istanbul+sunset" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 5 — Samedi 16 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour5">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">05</div>
+            <div class="day-meta">
+                <div class="day-label">Samedi 16 Mai</div>
+                <div class="day-title">Couleurs et nostalgie</div>
+                <div class="day-areas">Fener · Balat · Église Bulgare · Dernier soir</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map5"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">10h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚌 Bus vers Fener</div>
+                    <div class="tl-desc">Prenez la ligne 99 ou 99A depuis Eminönü vers l'arrêt Fener (20-30 min). Ou le petit ferry qui longe la Corne d'Or — beaucoup plus agréable et scenic.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">11h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">⛪ Église en Fer Bulgare</div>
+                    <div class="tl-desc">Sur les quais de la Corne d'Or, l'Église Saint-Étienne est entièrement construite en fer fondu — la seule au monde. Commandée en 1871 à Vienne, elle fut assemblée sur place comme un kit préfabriqué. Un chef-d'œuvre architectural totalement inattendu.</div>
+                    <a href="https://images.google.com/search?q=Bulgarian+Iron+Church+Istanbul+Saint+Stephen" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🎨 Exploration de Balat et Fener</div>
+                    <div class="tl-desc">Les anciens quartiers juifs et grecs d'Istanbul, préservés hors du temps. Maisons aux façades colorées qui s'effritent, brocanteurs, cafés dans des cours intérieures, enfants qui jouent. C'est l'Istanbul que peu de touristes voient.</div>
+                    <a href="https://images.google.com/search?q=Balat+Fener+Istanbul+maisons+colorees" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">19h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌃 Dernier soir en rooftop</div>
+                    <div class="tl-desc">Montez sur un rooftop de Sultanahmet pour une dernière vue sur les minarets illuminés. Avec un verre de raki ou un çay, regardez la ville s'endormir une dernière fois sous vos yeux.</div>
+                    <a href="https://images.google.com/search?q=Istanbul+rooftop+bar+Sultanahmet+nuit" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Dimanche</div>
+                <div class="tl-body">
+                    <div class="tl-title">✈️ Départ 5h00</div>
+                    <div class="tl-desc">Demandez à l'hôtel de réserver un taxi ou transfert privé la veille. La ville est vide à cette heure — comptez 45 à 60 min jusqu'à l'aéroport IST.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/fener.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Ancien quartier grec</div>
+                    <div class="mon-name">Fener</div>
+                    <div class="mon-desc">
+                        Fener fut pendant des siècles le quartier de la haute bourgeoisie grecque d'Istanbul. Ses imposantes maisons patriciennes en bois dominent la Corne d'Or, et le Patriarcat œcuménique de Constantinople y siège toujours dans une discrétion presque secrète.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Patriarcat œcuménique — cœur de l'Orthodoxie mondiale</li>
+                        <li>Grandes maisons grecques du XIXe siècle</li>
+                        <li>Vue sur la Corne d'Or depuis les rues en pente</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Fener+Istanbul+quartier+grec" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/balat.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Ancien quartier juif</div>
+                    <div class="mon-name">Balat</div>
+                    <div class="mon-desc">
+                        Longtemps cœur de la communauté juive séfarade d'Istanbul depuis l'accueil des exilés d'Espagne au XVe siècle. Ses ruelles en pente sont bordées de maisons en bois aux couleurs vives qui s'effritent avec grâce entre brocanteurs et cafés de quartier.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Les maisons colorées — un décor hors du temps</li>
+                        <li>Brocanteurs et antiquaires à chaque coin</li>
+                        <li>Cafés de quartier sans touristes</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Balat+Istanbul+colorful+houses" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/eglise_bulgare.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Unique au monde · 1871</div>
+                    <div class="mon-name">Église Bulgare en Fer</div>
+                    <div class="mon-desc">
+                        L'église Saint-Étienne des Bulgares est entièrement construite en fonte préfabriquée à Vienne et assemblée sur les rives de la Corne d'Or. Aucune autre église au monde ne partage cette particularité. Peu visitée, étrangement silencieuse.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Seule église entièrement en métal au monde</li>
+                        <li>Intérieur doré contrastant avec l'extérieur sombre</li>
+                        <li>Pratiquement vide — vous y serez seul</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Saint+Stephen+Bulgarian+Church+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-title">Bon voyage</div>
+    <p>Istanbul · 12 — 17 Mai 2026</p>
+    <p style="margin-top: 8px; opacity: 0.5;">Entre l'Europe et l'Asie, là où l'histoire respire encore</p>
+</footer>
+
+<script>
+// Sidebar toggle
+(function () {
+    var sidebar = document.getElementById('sidebar');
+    var toggle  = document.getElementById('sidebarToggle');
+    toggle.addEventListener('click', function () {
+        var open = sidebar.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        document.body.classList.toggle('sidebar-open', open);
+        toggle.setAttribute('aria-label', open ? 'Fermer les voyages' : 'Ouvrir les voyages');
+    });
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+        if (sidebar.classList.contains('open') &&
+            !sidebar.contains(e.target) &&
+            !toggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+            toggle.classList.remove('open');
+        }
+    });
+})();
+
+window.addEventListener('load', function () {
+
+    // Dark tiles (CartoDB Dark Matter)
+    const tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+    const tileAttr = '© OpenStreetMap © CARTO';
+
+    function pin(n) {
+        return L.divIcon({
+            className: '',
+            html: '<div class="lpin">' + n + '</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+            popupAnchor: [0, -20]
+        });
+    }
+
+    function buildMap(id, stops, ferryRoute) {
+        var map = L.map(id, { scrollWheelZoom: false, zoomControl: true });
+        L.tileLayer(tileUrl, { attribution: tileAttr, maxZoom: 19 }).addTo(map);
+
+        var coords = stops.map(function (s) { return [s.lat, s.lng]; });
+
+        // Route polyline
+        L.polyline(coords, {
+            color: '#d4644a',
+            weight: 2.5,
+            opacity: 0.75,
+            dashArray: '8 10'
+        }).addTo(map);
+
+        // Optional ferry dashed line (different style)
+        if (ferryRoute) {
+            L.polyline(ferryRoute, {
+                color: '#c9a255',
+                weight: 2,
+                opacity: 0.8,
+                dashArray: '4 8'
+            }).addTo(map);
+        }
+
+        // Numbered markers
+        stops.forEach(function (s) {
+            var m = L.marker([s.lat, s.lng], { icon: pin(s.n) }).addTo(map);
+            var html = '<b>' + s.name + '</b>';
+            if (s.time) html = '<span style="color:#d4644a;font-size:11px">' + s.time + '</span><br>' + html;
+            if (s.desc) html += '<br><span style="color:#8a847c">' + s.desc + '</span>';
+            m.bindPopup(html, { maxWidth: 220 });
+        });
+
+        map.fitBounds(L.latLngBounds(coords).pad(0.18));
+        return map;
+    }
+
+    // ── JOUR 1 ──────────────────────────────────────────
+    buildMap('map1', [
+        { n:1, lat:41.0047, lng:28.9748, name:'Hôtel Kadırga',         time:'17h30', desc:'Votre base pour tout le séjour' },
+        { n:2, lat:41.0055, lng:28.9768, name:'Place Sultanahmet',      time:'17h30', desc:'Mosquée Bleue au coucher du soleil' },
+        { n:3, lat:41.0038, lng:28.9690, name:'Kumkapı',                time:'19h00', desc:'Restaurants de poisson, musiciens de rue' }
+    ]);
+
+    // ── JOUR 2 ──────────────────────────────────────────
+    buildMap('map2', [
+        { n:1, lat:41.0086, lng:28.9802, name:'Sainte-Sophie',          time:'10h00', desc:'En premier avant la foule' },
+        { n:2, lat:41.0055, lng:28.9768, name:'Mosquée Bleue',          time:'10h45', desc:'Sultan Ahmed Camii' },
+        { n:3, lat:41.0058, lng:28.9779, name:'Arasta Bazaar',          time:'12h00', desc:'Déjeuner tranquille' },
+        { n:4, lat:41.0079, lng:28.9787, name:'Citerne Basilique',      time:'13h30', desc:'Colonnes et têtes de Méduse' },
+        { n:5, lat:41.0178, lng:28.9747, name:'Gare de Sirkeci',        time:'15h30', desc:'Terminus de l\'Orient Express' }
+    ]);
+
+    // ── JOUR 3 — traversée Bosphore ─────────────────────
+    buildMap('map3', [
+        { n:1, lat:41.0054, lng:28.9768, name:'Mosquée Bleue',         time:'09h00', desc:'Sultan Ahmed — 6 minarets, carreaux d\'Iznik' },
+        { n:2, lat:41.0175, lng:28.9736, name:'Eminönü',               time:'10h30', desc:'Embarcadère du ferry public (Vapur)' },
+        { n:3, lat:40.9929, lng:29.0216, name:'Kadıköy',               time:'11h00', desc:'Rive asiatique — marché, galeries' },
+        { n:4, lat:40.9858, lng:29.0290, name:'Moda',                  time:'14h00', desc:'Balade en bord de mer, terrasses' }
+    ],
+    // Trajet ferry Bosphore (aller + retour)
+    [
+        [41.0175, 28.9736],
+        [41.010,  28.988],
+        [40.9929, 29.0216]
+    ]);
+
+    // ── JOUR 4 ──────────────────────────────────────────
+    buildMap('map4', [
+        { n:1, lat:41.0163, lng:28.9695, name:'Grand Bazar',            time:'10h00', desc:'4 000 boutiques et hans ottomans' },
+        { n:2, lat:41.0163, lng:28.9636, name:'Mosquée Süleymaniye',    time:'13h00', desc:'Chef-d\'œuvre de l\'architecte Sinan' },
+        { n:3, lat:41.0232, lng:28.9727, name:'Pont de Galata',         time:'15h00', desc:'Pêcheurs et vue sur Sainte-Sophie' },
+        { n:4, lat:41.0273, lng:28.9729, name:'Karaköy',                time:'16h00', desc:'Quartier branché, Tour de Galata' }
+    ]);
+
+    // ── JOUR 5 ──────────────────────────────────────────
+    buildMap('map5', [
+        { n:1, lat:41.0175, lng:28.9736, name:'Eminönü',               time:'10h30', desc:'Bus 99 / 99A ou ferry Corne d\'Or' },
+        { n:2, lat:41.0335, lng:28.9424, name:'Église en Fer Bulgare', time:'11h00', desc:'Saint-Étienne — unique au monde' },
+        { n:3, lat:41.0365, lng:28.9410, name:'Balat',                 time:'11h30', desc:'Maisons colorées, brocanteurs' },
+        { n:4, lat:41.0340, lng:28.9468, name:'Fener',                 time:'13h00', desc:'Ancien quartier grec, Patriarcat' }
+    ]);
+
+});
+</script>
+</body>
+</html>

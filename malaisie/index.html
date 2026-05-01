@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaisie — Février 2027</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+    <link rel="stylesheet" href="../style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        .route-section {
+            padding: 80px 0 0;
+        }
+        .route-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+        .route-header {
+            margin-bottom: 32px;
+        }
+        .route-label {
+            font-family: system-ui, sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+        .route-title {
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            font-weight: 400;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .route-city { color: var(--gold); }
+        .route-arrow { color: var(--accent); opacity: 0.6; font-size: 0.9rem; }
+        .route-map {
+            width: 100%;
+            height: 480px;
+            border-radius: 2px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        @media (max-width: 900px) {
+            .route-inner { padding: 0 24px; }
+            .route-map { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-label">Carnets de voyage</div>
+        <div class="sidebar-title">Mes voyages</div>
+        <a href="../index.html" class="sidebar-home">← Accueil</a>
+    </div>
+    <nav class="sidebar-trips">
+        <a class="trip-item" href="../istanbul/index.html">
+            <div class="trip-year">2026</div>
+            <div class="trip-name">Istanbul</div>
+            <div class="trip-meta">12 — 17 Mai · 5 jours</div>
+            <div class="trip-badge">En cours</div>
+        </a>
+        <a class="trip-item active" href="index.html">
+            <div class="trip-year">2027</div>
+            <div class="trip-name">Malaisie</div>
+            <div class="trip-meta">7 — 19 Février · 13 jours</div>
+            <div class="trip-badge">À venir</div>
+        </a>
+    </nav>
+</div>
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Ouvrir les voyages">
+    <svg viewBox="0 0 18 14" fill="none" stroke-width="1.8" stroke-linecap="round">
+        <line x1="0" y1="1" x2="18" y2="1"/>
+        <line x1="0" y1="7" x2="18" y2="7" class="bar-mid"/>
+        <line x1="0" y1="13" x2="18" y2="13"/>
+    </svg>
+</button>
+
+<nav>
+    <ul>
+        <li><a href="#jour1">KL (jour 1))</a></li>
+        <li><a href="#jour2">KL (jour 2)</a></li>
+        <li><a href="#jour3">KL (jour 3)</a></li>
+        <li><a href="#penang">Penang (3j)</a></li>
+        <li><a href="#langkawi">Langkawi (5j)</a></li>
+        <li><a href="#malacca">Malacca (1j)</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="background-image: url('img/hero-malaisie.jpg')">
+    <div class="hero-content">
+        <div class="hero-eyebrow">Carnet de voyage · 2027</div>
+        <h1>Malaisie</h1>
+        <div class="hero-meta">
+            <span>7 — 19 Février</span>
+            <div class="hero-divider"></div>
+            <span>13 jours · 4 villes</span>
+            <div class="hero-divider"></div>
+            <span>KL · Penang · Langkawi · Malacca</span>
+        </div>
+    </div>
+</div>
+
+<!-- ROUTE OVERVIEW -->
+<section class="route-section">
+    <div class="route-inner">
+        <div class="route-header">
+            <div class="route-label">L'itinéraire</div>
+            <div class="route-title">
+                <span class="route-city">Kuala Lumpur</span>
+                <span class="route-arrow">→</span>
+                <span class="route-city">Penang</span>
+                <span class="route-arrow">→</span>
+                <span class="route-city">Langkawi</span>
+                <span class="route-arrow">→</span>
+                <span class="route-city">Malacca</span>
+            </div>
+        </div>
+        <div class="route-map" id="mapRoute"></div>
+    </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro">
+    <div class="intro-label">Le programme</div>
+    <h2>De la jungle urbaine aux plages de l'Andaman</h2>
+    <p>
+        Treize jours entre les tours vertigineuses de Kuala Lumpur, les rues peintes de Georgetown,
+        les eaux turquoise de Langkawi et la vieille ville coloniale de Malacca — entre modernité
+        débordante et héritages mêlés du temps des empires.
+    </p>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 1 — Vendredi 7 Février · KL
+════════════════════════════════════════ -->
+<section class="day" id="jour1">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">01</div>
+            <div class="day-meta">
+                <div class="day-label">Vendredi 7 Février · Kuala Lumpur</div>
+                <div class="day-title">Arrivée et première respiration</div>
+                <div class="day-areas">Aéroport · KLCC Park · Tours Petronas</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map1"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">06h50</div>
+                <div class="tl-body">
+                    <div class="tl-title">✈️ Atterrissage à KLIA</div>
+                    <div class="tl-desc">Arrivée à l'aéroport international de Kuala Lumpur. Formalités d'entrée, récupération des bagages, puis KLIA Ekspres vers la ville (28 min, ~10€). Installation à l'hôtel et repos — le vol est long.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Après-midi</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌿 KLCC Park — aire de jeux et pataugeoire</div>
+                    <div class="tl-desc">Au pied des tours Petronas, le parc KLCC est une oasis tropicale en plein centre. Une immense aire de jeux gratuite et une pataugeoire accueillent les enfants après le vol. L'ambiance est celle d'un parc local, à l'abri de l'agitation touristique.</div>
+                    <a href="https://images.google.com/search?q=KLCC+Park+Kuala+Lumpur+playground+children" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">18h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏙️ Tours Petronas illuminées</div>
+                    <div class="tl-desc">Depuis la pelouse du parc, levez les yeux : les deux tours jumelles — pendant dix ans les plus hautes du monde — s'illuminent à la tombée de la nuit. Le spectacle se répète chaque soir. Réservez le pont panoramique (42e étage) à l'avance si vous voulez monter.</div>
+                    <a href="https://images.google.com/search?q=Petronas+Towers+night+illuminated+KL" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-2">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/petronas-towers.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">1998 · 452 m · Anciennement les plus hautes du monde</div>
+                    <div class="mon-name">Tours Petronas</div>
+                    <div class="mon-desc">
+                        Symbole de la Malaisie moderne, conçues par César Pelli. Leur plan en étoile à huit branches s'inspire de la géométrie islamique. Le pont suspendu au 42e étage relie les deux tours — réservation en ligne impérative. La vue depuis le parc reste la plus spectaculaire.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Pont panoramique au 42e étage — réservation conseillée</li>
+                        <li>Illuminées chaque soir jusqu'à minuit</li>
+                        <li>Meilleure photo depuis la pelouse centrale du KLCC Park</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Petronas+Towers+interior+bridge+view" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/klcc.jpeg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">20 hectares · Entrée libre</div>
+                    <div class="mon-name">KLCC Park</div>
+                    <div class="mon-desc">
+                        Un écrin de verdure tropicale au pied des Petronas. Fontaines musicales programmées chaque soir, aire de jeux couverte, pataugeoire gratuite et jogging track. Le rendez-vous des familles de KL — l'endroit idéal pour une première immersion sans effort.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Pataugeoire gratuite — parfaite pour les enfants</li>
+                        <li>Spectacle des fontaines musicales à 20h et 21h</li>
+                        <li>Ombragé et agréable même en plein jour</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=KLCC+Park+fountain+show+Petronas" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 2 — Samedi 8 Février · KL
+════════════════════════════════════════ -->
+<section class="day" id="jour2">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">02</div>
+            <div class="day-meta">
+                <div class="day-label">Samedi 8 Février · Kuala Lumpur</div>
+                <div class="day-title">Mosquées, temples et encens</div>
+                <div class="day-areas">Masjid Jamek · Thean Hou · Temple Hindou</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map2"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">09h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🕌 Mosquée Jamek et Mosquée Nationale</div>
+                    <div class="tl-desc">La Mosquée Jamek (1909), construite à la confluence du Klang et du Gombak, est la plus ancienne de KL. Ses dômes roses et ses minarets rayés blanc s'inspirent de l'architecture moghole indienne. À 10 minutes à pied, la Mosquée Nationale (Masjid Negara) est plus massive — son parasol géant de béton est une icône de l'architecture malaisienne des années 60.</div>
+                    <a href="https://images.google.com/search?q=Masjid+Jamek+Kuala+Lumpur+river" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🙏 Temple Sri Mahamariamman</div>
+                    <div class="tl-desc">À deux pas de Petaling Street, ce temple hindou tamil du XIXe siècle est l'un des plus beaux de Malaisie. Son gopuram (tour d'entrée) de cinq étages, sculpté de centaines de divinités aux couleurs éclatantes, est saisissant. L'atmosphère — encens, fleurs, cloches — contraste radicalement avec les mosquées du matin.</div>
+                    <a href="https://images.google.com/search?q=Sri+Mahamariamman+Temple+KL+gopuram" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">14h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏮 Temple Thean Hou</div>
+                    <div class="tl-desc">Un des plus grands temples chinois d'Asie du Sud-Est, perché sur une colline au sud du centre. Ses lampions rouges, ses ornements dorés et ses pagodes superposées sont très photogéniques. En février, à l'approche du Nouvel An lunaire, le temple est couvert de milliers de lanternes — ambiance exceptionnelle.</div>
+                    <a href="https://images.google.com/search?q=Thean+Hou+Temple+Kuala+Lumpur+lanterns" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/masjid-jamek.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">1909 · La plus ancienne mosquée de KL</div>
+                    <div class="mon-name">Mosquée Jamek</div>
+                    <div class="mon-desc">
+                        Bâtie à la confluence des deux rivières fondatrices de Kuala Lumpur, la Masjid Jamek est un chef-d'œuvre de style moghol conçu par l'architecte Arthur Benison Hubback. C'est ici, sur ce même confluent, qu'est née la ville en 1857.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Entrée gratuite — tenue couverte exigée (fournie sur place)</li>
+                        <li>Vue sur la confluence des deux rivières depuis le parvis</li>
+                        <li>Site de fondation de Kuala Lumpur en 1857</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Masjid+Jamek+KL+pink+domes" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/sri-maha.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">XIXe siècle · Temple hindou tamil</div>
+                    <div class="mon-name">Temple Sri Mahamariamman</div>
+                    <div class="mon-desc">
+                        Fondé en 1873, ce temple dédié à la déesse Mariamman est le plus vénéré des tamouls de Malaisie. Son gopuram de cinq étages couvert de plus de 200 statues de divinités est une explosion de couleurs et de formes au cœur du centre historique. Point de départ de la grande procession Thaipusam vers Batu Caves.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Gopuram sculpté de plus de 200 divinités colorées</li>
+                        <li>Point de départ de la procession Thaipusam (janv./fév.)</li>
+                        <li>Atmosphère intense — encens, fleurs, cloches, offrandes</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Sri+Mahamariamman+Temple+Kuala+Lumpur+inside" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/thean-hou.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Temple chinois · Vue sur la skyline</div>
+                    <div class="mon-name">Temple Thean Hou</div>
+                    <div class="mon-desc">
+                        Un des plus grands temples chinois d'Asie du Sud-Est, dédié à la déesse de la mer Thean Hou. Ses six niveaux ornés de dragons, de tortues et de statues de jade offrent une vue panoramique sur la skyline de KL. En février, les décorations de lanternes du Nouvel An atteignent leur apogée.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Milliers de lanternes rouge en février — Nouvel An lunaire</li>
+                        <li>Vue sur la skyline de KL depuis la terrasse haute</li>
+                        <li>Tortues sacrées et fontaines dans le jardin</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Thean+Hou+Temple+KL+lanterns+Chinese+New+Year" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 3 — Dimanche 9 Février · KL
+════════════════════════════════════════ -->
+<section class="day" id="jour3">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">03</div>
+            <div class="day-meta">
+                <div class="day-label">Dimanche 9 Février · Kuala Lumpur</div>
+                <div class="day-title">Couleurs et saveurs</div>
+                <div class="day-areas">Batu Caves · Chinatown · Petaling Street</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map3"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">08h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">⛩️ Batu Caves — avant la chaleur</div>
+                    <div class="tl-desc">Partez tôt pour éviter la chaleur et les groupes. Les 272 marches peintes arc-en-ciel mènent à une grotte calcaire de 400 millions d'années abritant un temple hindou. Les singes macaques sont partout — sacs fermés, lunettes sur le nez. Accessible en commuter rail depuis KL Sentral (35 min, moins de 1€).</div>
+                    <a href="https://images.google.com/search?q=Batu+Caves+rainbow+stairs+monkeys" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🍜 Chinatown et Petaling Street</div>
+                    <div class="tl-desc">Le quartier chinois de KL — animé, coloré, et le meilleur endroit pour manger. Petaling Street regorge de stands de street-food (laksa, char kway teow, dim sum), vendeurs de souvenirs et boutiques sous des lampions rouges permanents. Ne manquez pas un verre de jus de canne à sucre pressé à la main sur le trottoir.</div>
+                    <a href="https://images.google.com/search?q=Petaling+Street+Chinatown+KL+food" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-2">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/batu-caves.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Temple hindou · 272 marches arc-en-ciel</div>
+                    <div class="mon-name">Batu Caves</div>
+                    <div class="mon-desc">
+                        Une grotte calcaire de 400 millions d'années abritant des temples hindous depuis le XIXe siècle. La statue dorée de Murugan à l'entrée mesure 42,7 mètres. L'escalier aux couleurs de l'arc-en-ciel mène à la grotte cathédrale : une voûte naturelle de 100 mètres de haut. Les singes macaques en liberté font partie du spectacle.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Arriver avant 9h — chaleur et foule après</li>
+                        <li>Singes macaques en liberté — sacs fermés obligatoires</li>
+                        <li>KTM Komuter depuis KL Sentral — 35 min, très peu cher</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Batu+Caves+interior+temple+cave" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/petaling-street.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Quartier chinois · Street-food · Souvenirs</div>
+                    <div class="mon-name">Chinatown & Petaling Street</div>
+                    <div class="mon-desc">
+                        Le cœur historique sino-malaisien de KL depuis les années 1880. Ses ruelles couvertes de lanternes rouges, ses marchands ambulants et ses restaurants ouverts sur la rue forment le tableau le plus vivant de la ville. À ne pas manquer : le Central Market pour les artisanats et les Nyonya kueh (gâteaux de riz) chez les pâtissières locales.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Meilleur street-food de KL — laksa, char kway teow</li>
+                        <li>Central Market — artisanat malaisien, batik, bois sculpté</li>
+                        <li>Ambiance lampions rouges permanents toute l'année</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Petaling+Street+KL+lanterns+night" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PENANG — 10 au 12 Février
+════════════════════════════════════════ -->
+<section class="day" id="penang">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">04</div>
+            <div class="day-meta">
+                <div class="day-label">10 — 12 Février · Penang · 3 nuits</div>
+                <div class="day-title">L'île aux saveurs et aux couleurs</div>
+                <div class="day-areas">Georgetown · Kek Lok Si · Batu Ferringhi</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map4"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">Matin</div>
+                <div class="tl-body">
+                    <div class="tl-title">🎨 Street art de Georgetown</div>
+                    <div class="tl-desc">Georgetown est devenue une référence mondiale du street art depuis 2012, quand l'artiste Ernest Zacharevic a commencé à peindre les murs de la vieille ville. Aujourd'hui des dizaines d'œuvres se cachent dans les ruelles — des portraits d'enfants en métal forgé, des scènes de vie locale à grandeur nature. Une carte gratuite est disponible à l'office du tourisme. Préférez le matin pour la lumière et l'absence de foule.</div>
+                    <a href="https://images.google.com/search?q=Georgetown+Penang+street+art+Ernest+Zacharevic" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Après-midi</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏛️ Temple Kek Lok Si</div>
+                    <div class="tl-desc">Le plus grand temple bouddhiste de Malaisie, perché sur les hauteurs de Georgetown. Ses niveaux successifs mêlent styles chinois, thaïlandais et birman, couronnés par une pagode de 30 mètres. Un téléphérique monte jusqu'à la statue de la déesse Kuan Yin — de là, le panorama sur Penang et la mer est saisissant. En février, 10 000 lumières s'allument le soir pour le Nouvel An.</div>
+                    <a href="https://images.google.com/search?q=Kek+Lok+Si+temple+Penang+pagoda" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Journée</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏖️ Plage de Batu Ferringhi</div>
+                    <div class="tl-desc">À 30 minutes au nord de Georgetown, la plage la plus populaire de Penang. Sable blanc, eau chaude, parasols à louer et activités nautiques. Le soir, la route bordant la plage se transforme en marché nocturne très animé — idéal pour souper en bord de mer avec des fruits de mer frais grillés.</div>
+                    <a href="https://images.google.com/search?q=Batu+Ferringhi+beach+Penang+night+market" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/penang-street-art.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Patrimoine UNESCO · Capitale mondiale du street art</div>
+                    <div class="mon-name">Georgetown Street Art</div>
+                    <div class="mon-desc">
+                        La vieille ville classée UNESCO en 2008 est devenue un musée à ciel ouvert. Ses murs racontent l'histoire de la communauté péranakan entre portraits d'artisans, scènes de vie et références culturelles chinoises et malaises. Une façon unique de découvrir la ville en flânant dans ses ruelles coloniales.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Carte des murals à l'office de tourisme — gratuite</li>
+                        <li>Meilleure lumière pour les photos tôt le matin</li>
+                        <li>Ruelles de Little India et Armenian Street à ne pas manquer</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Georgetown+Penang+UNESCO+heritage+street" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/kek-lok-si-temple-penang.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Plus grand temple bouddhiste de Malaisie · 1891</div>
+                    <div class="mon-name">Temple Kek Lok Si</div>
+                    <div class="mon-desc">
+                        Fondé en 1891, ce complexe s'étire sur toute la colline d'Air Itam. Sa pagode à sept niveaux mêle influences birmanes, thaïes et chinoises. La statue colossale de la déesse Kuan Yin (36 m) encadrée d'une pergola octogonale est visible depuis toute la ville. Lors du Nouvel An, 10 000 lumières illuminent le temple entier.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Téléphérique jusqu'à la statue de Kuan Yin</li>
+                        <li>Vue panoramique sur Georgetown et la mer de Malacca</li>
+                        <li>10 000 lumières lors des fêtes du Nouvel An lunaire</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Kek+Lok+Si+pagoda+night+lights" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/batu-ferringhi-beach.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Plage · Marché nocturne</div>
+                    <div class="mon-name">Batu Ferringhi</div>
+                    <div class="mon-desc">
+                        La grande plage du nord de Penang, rythmée par les vagues douces de l'Andaman. En journée, location de parasols, kayaks et planches à voile. Le soir, la route se transforme en marché nocturne coloré : textiles, épices, souvenirs et restaurants de bord de mer où les fruits de mer sont grillés devant vous.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Marché nocturne tous les soirs — très animé</li>
+                        <li>Fruits de mer grillés les pieds dans le sable</li>
+                        <li>Eaux calmes — activités nautiques en journée</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Batu+Ferringhi+night+market+Penang+seafood" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     LANGKAWI — 13 au 18 Février
+════════════════════════════════════════ -->
+<section class="day" id="langkawi">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">05</div>
+            <div class="day-meta">
+                <div class="day-label">13 — 18 Février · Langkawi · 5 nuits</div>
+                <div class="day-title">L'île aux aigles et aux plages oubliées</div>
+                <div class="day-areas">Pantai Cenang · Tanjung Rhu · Mangrove de Kilim</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map5"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">Chaque jour</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏖️ Pantai Cenang — votre base</div>
+                    <div class="tl-desc">Votre logement se trouve à Pantai Cenang, la plage principale de Langkawi. Longue bande de sable blanc bordée de cocotiers, eaux peu profondes idéales pour les enfants. La rue principale regorge de restaurants, épiceries et loueurs de scooters pour explorer l'île. Coucher de soleil face à la mer d'Andaman depuis la plage — rituel quotidien.</div>
+                    <a href="https://images.google.com/search?q=Pantai+Cenang+Langkawi+sunset+beach" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Excursion</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌊 Plage de Tanjung Rhu</div>
+                    <div class="tl-desc">À 40 minutes au nord en scooter ou taxi, Tanjung Rhu est peut-être la plus belle plage de Malaisie. Sable blanc poudré, eaux calmes turquoise, et des formations de calcaire couvertes de végétation tropicale qui plongent dans la mer. Beaucoup moins fréquentée que Pantai Cenang — un dépaysement total.</div>
+                    <a href="https://images.google.com/search?q=Tanjung+Rhu+beach+Langkawi+turquoise" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Excursion</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚤 Balade en bateau dans la mangrove</div>
+                    <div class="tl-desc">La rivière Kilim, dans le Parc Géologique UNESCO de Langkawi, offre une immersion totale dans la jungle de palétuviers. En bateau, remontez les canaux entre les racines enchevêtrées, croisez des aigles à ventre blanc (l'emblème de l'île), des lézards monitors, des singes et des crocodiles. Demi-journée à réserver depuis Pantai Cenang — guide obligatoire et très recommandé.</div>
+                    <a href="https://images.google.com/search?q=Kilim+Geoforest+mangrove+Langkawi+boat+eagle" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/pantai-cenang.jpeg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Plage principale · Votre logement</div>
+                    <div class="mon-name">Pantai Cenang</div>
+                    <div class="mon-desc">
+                        Le cœur touristique de Langkawi, accessible et animé. Sa plage de deux kilomètres est idéale pour les enfants : eaux peu profondes, vagues douces, ombre des cocotiers. Restaurants, glaciers et petits commerces à portée de main. À vélo ou en scooter, toute l'île est accessible depuis ici.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Eaux peu profondes — idéal pour les jeunes enfants</li>
+                        <li>Coucher de soleil face à la mer d'Andaman</li>
+                        <li>Base idéale pour rayonner vers le reste de l'île</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Pantai+Cenang+beach+Langkawi+sunset" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/Tanjung-Rhu-Beach-Langkawi-Island-Malaysia-featured.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Plage sauvage · Calcaire et turquoise</div>
+                    <div class="mon-name">Tanjung Rhu</div>
+                    <div class="mon-desc">
+                        Protégée par un parc naturel et peu accessible depuis la route, Tanjung Rhu est restée sauvage. Son sable est si fin qu'il brille sous le soleil. Des pitons calcaires couverts de jungle émergent de l'eau turquoise. Peu de monde en semaine — le contraste avec Pantai Cenang est saisissant.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Accessible en scooter loué depuis Pantai Cenang</li>
+                        <li>Kayaks à louer pour explorer les pitons calcaires</li>
+                        <li>Quasi-déserte en semaine hors saison</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Tanjung+Rhu+Langkawi+limestone+kayak" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/mangrove-langkawi.jpeg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Parc UNESCO · Biodiversité exceptionnelle</div>
+                    <div class="mon-name">Mangrove de Kilim</div>
+                    <div class="mon-desc">
+                        Le Parc Géologique de Langkawi, classé UNESCO Global Geopark, est un monde à part. Les canaux de mangrove de la rivière Kilim abritent aigles brahminy, loutres, varans, singes et crocodiles. Les stalactites calcaires qui plongent dans l'eau rappellent que ce paysage est fossilisé depuis des millions d'années.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Tour en bateau demi-journée — guide et lunch inclus</li>
+                        <li>Meilleure heure pour les aigles : tôt le matin</li>
+                        <li>Arrêt à la ferme aux aigles et grottes de chauves-souris</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Kilim+mangrove+Langkawi+eagle+boat" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     MALACCA — 18 au 19 Février
+════════════════════════════════════════ -->
+<section class="day" id="malacca">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">06</div>
+            <div class="day-meta">
+                <div class="day-label">18 — 19 Février · Malacca</div>
+                <div class="day-title">Dernier souffle colonial</div>
+                <div class="day-areas">Place Rouge · Jonker Street · Mosquée Flottante</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map6"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">09h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏛️ Dutch Square — la Place Rouge</div>
+                    <div class="tl-desc">La Stadthuys, bâtiment administratif hollandais de 1650 peint en rouge sang, est le symbole de Malacca. La place qui l'entoure réunit l'église Christ Church, une fontaine victorienne et des pousse-pousse décorés de fleurs en plastique kitsch. Le long de la rivière Malacca, une promenade longe d'anciens entrepôts reconvertis en cafés.</div>
+                    <a href="https://images.google.com/search?q=Dutch+Square+Malacca+Stadthuys+red" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🍽️ Jonker Street — cuisine Nyonya</div>
+                    <div class="tl-desc">Le cœur du quartier péranakan de Malacca. La cuisine Nyonya — née du métissage entre marchands chinois et culture malaise au XVe siècle — est l'une des plus complexes d'Asie du Sud-Est : laksa peranakan, rendang, pineapple tarts. Jonker Street est bordée de restaurants centenaires, boutiques d'antiquités et vendeurs de cendol à l'ancienne.</div>
+                    <a href="https://images.google.com/search?q=Jonker+Street+Malacca+Nyonya+food+heritage" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">15h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🕌 Mosquée flottante Masjid Selat Melaka</div>
+                    <div class="tl-desc">Construite sur pilotis dans le détroit de Malacca, cette mosquée donne l'impression de flotter sur l'eau à marée haute. Ses dômes turquoise et ses minarets blancs sont spectaculaires depuis la rive. Un chemin surélevé permet d'approcher depuis le rivage. Idéale pour un dernier coucher de soleil sur l'eau avant le retour.</div>
+                    <a href="https://images.google.com/search?q=Masjid+Selat+Melaka+floating+mosque+sunset" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/dutch-square.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Patrimoine UNESCO · 1650</div>
+                    <div class="mon-name">Dutch Square</div>
+                    <div class="mon-desc">
+                        La Stadthuys rouge, construite par les Hollandais en 1650, est considérée comme le plus vieux bâtiment colonial d'Asie du Sud-Est encore debout. L'église Christ Church (1753) ferme l'autre côté de la place. Le contraste entre ce décor européen et les triporteurs décorés de fleurs est typiquement malaisien.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Plus vieux bâtiment hollandais d'Asie du Sud-Est</li>
+                        <li>Pousse-pousse décorés à louer sur la place</li>
+                        <li>Promenade le long de la Rivière Malacca restaurée</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Stadthuys+Dutch+Square+Malacca+trishaw" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/jonker-street.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Quartier péranakan · Cuisine Nyonya</div>
+                    <div class="mon-name">Jonker Street</div>
+                    <div class="mon-desc">
+                        La Jalan Hang Jebat — Jonker Street — est le cœur de la culture Baba-Nyonya, née du métissage sino-malaisien. Ses maisons-boutiques du XVIIIe siècle abritent antiquaires, galeries et restaurants. La cuisine Nyonya ici est authentique : ne manquez pas le laksa de Malacca (différent de celui de Penang) et les kueh colorés.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Musée Baba & Nyonya Heritage — meilleur musée de la ville</li>
+                        <li>Laksa de Malacca — recette différente de celle de Penang</li>
+                        <li>Marché nocturne le week-end — extrêmement animé</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Jonker+Street+Malacca+peranakan+heritage" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/floating-mosque.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Sur pilotis · Détroit de Malacca</div>
+                    <div class="mon-name">Mosquée Flottante</div>
+                    <div class="mon-desc">
+                        La Masjid Selat Melaka, inaugurée en 2006, est construite sur pilotis dans le détroit. À marée haute, elle semble flotter sur l'eau — l'effet au coucher du soleil est saisissant. Un chemin surélevé depuis le rivage permet aux non-musulmans d'approcher librement et d'admirer l'architecture depuis l'extérieur.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Plus impressionnante à marée haute — vérifier les horaires</li>
+                        <li>Vue spectaculaire au coucher du soleil</li>
+                        <li>À 4 km du centre — accessible en Grab ou vélo</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Masjid+Selat+Melaka+floating+mosque+tide" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-title">Bon voyage</div>
+    <p>Malaisie · 7 — 19 Février 2027</p>
+    <p style="margin-top: 8px; opacity: 0.5;">Entre jungle urbaine et eaux turquoise</p>
+</footer>
+
+<script>
+// Sidebar toggle
+(function () {
+    var sidebar = document.getElementById('sidebar');
+    var toggle  = document.getElementById('sidebarToggle');
+    toggle.addEventListener('click', function () {
+        var open = sidebar.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        document.body.classList.toggle('sidebar-open', open);
+        toggle.setAttribute('aria-label', open ? 'Fermer les voyages' : 'Ouvrir les voyages');
+    });
+    document.addEventListener('click', function (e) {
+        if (sidebar.classList.contains('open') &&
+            !sidebar.contains(e.target) &&
+            !toggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+            toggle.classList.remove('open');
+        }
+    });
+})();
+
+window.addEventListener('load', function () {
+
+    const tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+    const tileAttr = '© OpenStreetMap © CARTO';
+
+    function pin(n) {
+        return L.divIcon({
+            className: '',
+            html: '<div class="lpin">' + n + '</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+            popupAnchor: [0, -20]
+        });
+    }
+
+    function buildMap(id, stops, extraRoute) {
+        var map = L.map(id, { scrollWheelZoom: false, zoomControl: true });
+        L.tileLayer(tileUrl, { attribution: tileAttr, maxZoom: 19 }).addTo(map);
+        var coords = stops.map(function (s) { return [s.lat, s.lng]; });
+        L.polyline(coords, { color: '#d4644a', weight: 2.5, opacity: 0.75, dashArray: '8 10' }).addTo(map);
+        if (extraRoute) {
+            L.polyline(extraRoute, { color: '#c9a255', weight: 2, opacity: 0.8, dashArray: '4 8' }).addTo(map);
+        }
+        stops.forEach(function (s) {
+            var m = L.marker([s.lat, s.lng], { icon: pin(s.n) }).addTo(map);
+            var html = '<b>' + s.name + '</b>';
+            if (s.time) html = '<span style="color:#d4644a;font-size:11px">' + s.time + '</span><br>' + html;
+            if (s.desc) html += '<br><span style="color:#8a847c">' + s.desc + '</span>';
+            m.bindPopup(html, { maxWidth: 220 });
+        });
+        map.fitBounds(L.latLngBounds(coords).pad(0.22));
+        return map;
+    }
+
+    // ── CARTE ITINÉRAIRE GÉNÉRALE ───────────────────────
+    (function () {
+        var map = L.map('mapRoute', { scrollWheelZoom: false, zoomControl: true });
+        L.tileLayer(tileUrl, { attribution: tileAttr, maxZoom: 19 }).addTo(map);
+
+        var cities = [
+            { n:1, lat:3.1390,  lng:101.6869, name:'Kuala Lumpur', dates:'7 — 9 Fév',   desc:'3 jours · KLCC · Batu Caves · Chinatown' },
+            { n:2, lat:5.4141,  lng:100.3288,  name:'Penang',       dates:'10 — 12 Fév', desc:'3 nuits · Georgetown · Kek Lok Si · Batu Ferringhi' },
+            { n:3, lat:6.3500,  lng:99.8000,   name:'Langkawi',     dates:'13 — 18 Fév', desc:'5 nuits · Pantai Cenang · Mangrove · Tanjung Rhu' },
+            { n:4, lat:2.1896,  lng:102.2501,  name:'Malacca',      dates:'18 — 19 Fév', desc:'Dernière étape · Dutch Square · Jonker Street' }
+        ];
+
+        var routeCoords = cities.map(function (c) { return [c.lat, c.lng]; });
+
+        L.polyline(routeCoords, {
+            color: '#d4644a',
+            weight: 3,
+            opacity: 0.8,
+            dashArray: '10 12'
+        }).addTo(map);
+
+        cities.forEach(function (c) {
+            var m = L.marker([c.lat, c.lng], { icon: pin(c.n) }).addTo(map);
+            var html = '<b>' + c.name + '</b><br>';
+            html += '<span style="color:#d4644a;font-size:11px">' + c.dates + '</span><br>';
+            html += '<span style="color:#8a847c">' + c.desc + '</span>';
+            m.bindPopup(html, { maxWidth: 240 });
+        });
+
+        map.fitBounds(L.latLngBounds(routeCoords).pad(0.14));
+    })();
+
+    // ── JOUR 1 — KLCC ────────────────────────────────────
+    buildMap('map1', [
+        { n:1, lat:3.1578,  lng:101.7123, name:'Hôtel / KLCC',        time:'Arrivée',    desc:'Installation et repos' },
+        { n:2, lat:3.1558,  lng:101.7103, name:'KLCC Park',           time:'Après-midi', desc:'Pataugeoire et aire de jeux gratuits' },
+        { n:3, lat:3.1579,  lng:101.7120, name:'Tours Petronas',      time:'18h30',      desc:'Illuminées au crépuscule' }
+    ]);
+
+    // ── JOUR 2 — Lieux de culte ──────────────────────────
+    buildMap('map2', [
+        { n:1, lat:3.1481,  lng:101.6960, name:'Mosquée Jamek',             time:'09h00', desc:'La plus ancienne de KL, style moghol (1909)' },
+        { n:2, lat:3.1421,  lng:101.6933, name:'Mosquée Nationale',         time:'10h30', desc:'Architecture malaisienne des années 60' },
+        { n:3, lat:3.1453,  lng:101.6960, name:'Temple Sri Mahamariamman',  time:'12h00', desc:'Temple hindou tamil XIXe s. — gopuram coloré' },
+        { n:4, lat:3.1073,  lng:101.6839, name:'Temple Thean Hou',          time:'14h30', desc:'Plus grand temple chinois de Malaisie' }
+    ]);
+
+    // ── JOUR 3 — Batu Caves + Chinatown ──────────────────
+    buildMap('map3', [
+        { n:1, lat:3.2379,  lng:101.6840, name:'Batu Caves',         time:'08h00', desc:'272 marches arc-en-ciel, singes, grotte sacrée' },
+        { n:2, lat:3.1435,  lng:101.6951, name:'Chinatown / Petaling', time:'12h30', desc:'Street-food, lampions rouges, souvenirs' }
+    ]);
+
+    // ── PENANG ────────────────────────────────────────────
+    buildMap('map4', [
+        { n:1, lat:5.4180,  lng:100.3360, name:'Georgetown Street Art', time:'Matin',      desc:'Murals UNESCO dans les ruelles historiques' },
+        { n:2, lat:5.3997,  lng:100.2751, name:'Temple Kek Lok Si',    time:'Après-midi', desc:'Plus grand temple bouddhiste de Malaisie' },
+        { n:3, lat:5.4756,  lng:100.2400, name:'Batu Ferringhi',       time:'Journée',    desc:'Plage et marché nocturne de fruits de mer' }
+    ]);
+
+    // ── LANGKAWI ──────────────────────────────────────────
+    buildMap('map5', [
+        { n:1, lat:6.2919,  lng:99.7138,  name:'Pantai Cenang',  time:'Base',      desc:'Logement — plage principale, eaux peu profondes' },
+        { n:2, lat:6.4280,  lng:99.8700,  name:'Tanjung Rhu',    time:'Excursion', desc:'Plage sauvage — calcaire et eaux turquoise' },
+        { n:3, lat:6.4270,  lng:99.9600,  name:'Mangrove Kilim', time:'Excursion', desc:'Parc UNESCO — aigles, crocodiles, palétuviers' }
+    ]);
+
+    // ── MALACCA ───────────────────────────────────────────
+    buildMap('map6', [
+        { n:1, lat:2.1943,  lng:102.2481, name:'Dutch Square',         time:'09h00', desc:'Stadthuys rouge, plus vieux bâtiment hollandais d\'Asie' },
+        { n:2, lat:2.1962,  lng:102.2458, name:'Jonker Street',        time:'12h00', desc:'Cuisine Nyonya, antiquaires péranakan' },
+        { n:3, lat:2.1827,  lng:102.2276, name:'Mosquée Selat Melaka', time:'15h00', desc:'Mosquée flottante dans le détroit de Malacca' }
+    ]);
+
+});
+</script>
+</body>
+</html>

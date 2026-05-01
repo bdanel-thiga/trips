@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Istanbul — Mai 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        :root {
+            --bg: #0c0b09;
+            --surface: #141210;
+            --card: #1c1a17;
+            --border: #2c2925;
+            --accent: #d4644a;
+            --gold: #c9a255;
+            --text: #f0ece5;
+            --muted: #8a847c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.7;
+        }
+
+        /* NAV */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(12,11,9,0.88);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+        }
+
+        nav a {
+            display: block;
+            padding: 18px 28px;
+            color: var(--muted);
+            text-decoration: none;
+            font-family: system-ui, sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        nav a:hover { color: var(--accent); }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 80px;
+            position: relative;
+            overflow: hidden;
+            background: url('img/hero.jpg') center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(12,11,9,1) 0%,
+                rgba(12,11,9,0.5) 50%,
+                rgba(12,11,9,0.15) 100%
+            );
+        }
+
+        .hero-content { position: relative; max-width: 900px; }
+
+        .hero-eyebrow {
+            font-family: system-ui, sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(72px, 11vw, 148px);
+            font-weight: 400;
+            line-height: 0.88;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            margin-bottom: 36px;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 48px;
+            align-items: center;
+            font-family: system-ui, sans-serif;
+            font-size: 0.82rem;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+        }
+
+        .hero-divider { width: 40px; height: 1px; background: var(--border); }
+
+        /* INTRO */
+        .intro {
+            max-width: 680px;
+            margin: 100px auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .intro-label {
+            font-family: system-ui, sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .intro h2 {
+            font-size: 1.9rem;
+            font-weight: 400;
+            color: var(--gold);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .intro p {
+            font-size: 1rem;
+            color: var(--muted);
+            line-height: 1.9;
+        }
+
+        /* DAY SECTION */
+        .day {
+            border-top: 1px solid var(--border);
+            padding: 80px 0;
+            scroll-margin-top: 56px;
+        }
+
+        .day-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        /* Day header */
+        .day-header {
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
+            margin-bottom: 56px;
+        }
+
+        .day-num {
+            font-size: clamp(80px, 9vw, 110px);
+            line-height: 1;
+            color: var(--border);
+            letter-spacing: -0.04em;
+            flex-shrink: 0;
+            font-weight: 400;
+            user-select: none;
+        }
+
+        .day-meta { padding-top: 8px; }
+
+        .day-label {
+            font-family: system-ui, sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .day-title {
+            font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .day-areas {
+            font-family: system-ui, sans-serif;
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+        }
+
+        /* MAP */
+        .day-map {
+            width: 100%;
+            height: 440px;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 60px;
+            border: 1px solid var(--border);
+        }
+
+        .day-map iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            filter: grayscale(0.2) contrast(1.05);
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            margin-bottom: 64px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 88px;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .tl-item {
+            display: grid;
+            grid-template-columns: 88px 1fr;
+            gap: 0;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tl-item:last-child { border-bottom: none; }
+
+        .tl-time {
+            font-family: system-ui, sans-serif;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+            text-align: right;
+            padding-right: 0;
+            padding-top: 3px;
+        }
+
+        .tl-body {
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .tl-body::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 9px;
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 3px var(--bg);
+        }
+
+        .tl-title {
+            font-size: 1.05rem;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .tl-desc {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.75;
+            max-width: 580px;
+        }
+
+        .tl-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            font-family: system-ui, sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-decoration: none;
+            opacity: 0.65;
+            transition: opacity 0.2s;
+        }
+
+        .tl-link:hover { opacity: 1; }
+
+        /* MONUMENTS GRID */
+        .monuments {
+            display: grid;
+            gap: 3px;
+        }
+
+        .monuments.cols-1 { grid-template-columns: 1fr; }
+        .monuments.cols-2 { grid-template-columns: 1fr 1fr; }
+        .monuments.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        .monument {
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .monument.tall { height: 520px; }
+        .monument.short { height: 400px; }
+
+        .mon-photo {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.7s ease;
+        }
+
+        .monument:hover .mon-photo { transform: scale(1.05); }
+
+        .mon-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(12,11,9,0.97) 0%,
+                rgba(12,11,9,0.4) 55%,
+                transparent 100%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 36px;
+            transition: background 0.4s;
+        }
+
+        .monument:hover .mon-overlay {
+            background: linear-gradient(
+                to top,
+                rgba(12,11,9,0.99) 0%,
+                rgba(12,11,9,0.75) 50%,
+                rgba(12,11,9,0.2) 100%
+            );
+        }
+
+        .mon-badge {
+            font-family: system-ui, sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .mon-name {
+            font-size: clamp(1.2rem, 2vw, 1.75rem);
+            font-weight: 400;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .mon-desc {
+            font-size: 0.86rem;
+            color: var(--muted);
+            line-height: 1.75;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, margin-top 0.3s;
+        }
+
+        .monument:hover .mon-desc {
+            max-height: 160px;
+            margin-top: 14px;
+        }
+
+        .mon-highlights {
+            list-style: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease 0.1s;
+        }
+
+        .monument:hover .mon-highlights { max-height: 150px; }
+
+        .mon-highlights li {
+            font-family: system-ui, sans-serif;
+            font-size: 0.76rem;
+            color: var(--gold);
+            padding: 3px 0;
+            opacity: 0.85;
+        }
+
+        .mon-highlights li::before { content: '— '; opacity: 0.5; }
+
+        .mon-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: system-ui, sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-decoration: none;
+            margin-top: 0;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s, opacity 0.3s 0.15s, margin-top 0.3s;
+        }
+
+        .monument:hover .mon-link {
+            max-height: 40px;
+            opacity: 1;
+            margin-top: 16px;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 64px 40px;
+            text-align: center;
+        }
+
+        footer .footer-title {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        footer p {
+            font-family: system-ui, sans-serif;
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+        }
+
+        /* MAP PINS */
+        .lpin {
+            width: 30px; height: 30px;
+            background: var(--accent);
+            border: 2.5px solid white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: system-ui, sans-serif;
+            font-size: 12px; font-weight: 700;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .lpin:hover { transform: scale(1.2); }
+
+        .leaflet-popup-content-wrapper {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .leaflet-popup-tip { background: var(--card); }
+        .leaflet-popup-content b { color: var(--accent); font-style: normal; }
+        .leaflet-popup-content { font-family: system-ui, sans-serif; font-size: 13px; line-height: 1.5; }
+
+        /* SIDEBAR */
+        .sidebar-toggle {
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            z-index: 200;
+            background: var(--card);
+            border: 1px solid var(--border);
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s, border-color 0.2s;
+            padding: 0;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--border);
+            border-color: var(--muted);
+        }
+
+        .sidebar-toggle svg {
+            width: 18px;
+            height: 14px;
+            stroke: var(--muted);
+            transition: stroke 0.2s;
+        }
+
+        .sidebar-toggle:hover svg { stroke: var(--text); }
+
+        .sidebar-toggle.open svg .bar-mid { opacity: 0; }
+
+        .sidebar-toggle.open svg { stroke: var(--accent); }
+
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            z-index: 190;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-toggle.open {
+            left: 296px;
+        }
+
+        .sidebar-header {
+            padding: 32px 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-label {
+            font-family: system-ui, sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        .sidebar-trips {
+            padding: 20px 0;
+            flex: 1;
+        }
+
+        .trip-item {
+            display: block;
+            padding: 16px 24px;
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            transition: background 0.15s, border-color 0.15s;
+            cursor: pointer;
+        }
+
+        .trip-item:hover {
+            background: var(--card);
+        }
+
+        .trip-item.active {
+            border-left-color: var(--accent);
+            background: var(--card);
+        }
+
+        .trip-item.soon {
+            opacity: 0.55;
+            cursor: default;
+        }
+
+        .trip-item.soon:hover {
+            background: transparent;
+        }
+
+        .trip-year {
+            font-family: system-ui, sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .trip-item.soon .trip-year { color: var(--muted); }
+
+        .trip-name {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .trip-meta {
+            font-family: system-ui, sans-serif;
+            font-size: 0.72rem;
+            color: var(--muted);
+        }
+
+        .trip-badge {
+            display: inline-block;
+            margin-top: 7px;
+            font-family: system-ui, sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--muted);
+        }
+
+        .trip-item.active .trip-badge {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero { padding: 40px 28px; }
+            .day-inner { padding: 0 24px; }
+            .day-header { gap: 16px; }
+            .day-num { font-size: 60px; }
+            .timeline::before { left: 62px; }
+            .tl-item { grid-template-columns: 62px 1fr; }
+            .monuments.cols-2,
+            .monuments.cols-3 { grid-template-columns: 1fr; }
+            .monument.tall,
+            .monument.short { height: 360px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-label">Carnets de voyage</div>
+        <div class="sidebar-title">Mes voyages</div>
+    </div>
+    <nav class="sidebar-trips">
+        <a class="trip-item active" href="index.html">
+            <div class="trip-year">2026</div>
+            <div class="trip-name">Istanbul</div>
+            <div class="trip-meta">12 — 17 Mai · 5 jours</div>
+            <div class="trip-badge">En cours</div>
+        </a>
+        <div class="trip-item soon">
+            <div class="trip-year">2027</div>
+            <div class="trip-name">Malaisie</div>
+            <div class="trip-meta">Kuala Lumpur · Penang · Langkawi</div>
+            <div class="trip-badge">À venir</div>
+        </div>
+    </nav>
+</div>
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Ouvrir les voyages">
+    <svg viewBox="0 0 18 14" fill="none" stroke-width="1.8" stroke-linecap="round">
+        <line x1="0" y1="1" x2="18" y2="1"/>
+        <line x1="0" y1="7" x2="18" y2="7" class="bar-mid"/>
+        <line x1="0" y1="13" x2="18" y2="13"/>
+    </svg>
+</button>
+
+<nav>
+    <ul>
+        <li><a href="#jour1">Mardi 12</a></li>
+        <li><a href="#jour2">Mercredi 13</a></li>
+        <li><a href="#jour3">Jeudi 14</a></li>
+        <li><a href="#jour4">Vendredi 15</a></li>
+        <li><a href="#jour5">Samedi 16</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <div class="hero-eyebrow">Carnet de voyage · 2026</div>
+        <h1>Istanbul</h1>
+        <div class="hero-meta">
+            <span>12 — 17 Mai</span>
+            <div class="hero-divider"></div>
+            <span>5 jours · 2 continents</span>
+            <div class="hero-divider"></div>
+            <span>Sultanahmet · Kadıköy · Balat</span>
+        </div>
+    </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+    <div class="intro-label">Le parcours</div>
+    <h2>Entre l'Europe et l'Asie, l'histoire respire encore</h2>
+    <p>
+        Mosquées ottomanes et basiliques byzantines côte à côte, ferry sur le Bosphore au crépuscule,
+        ruelles colorées de Balat et bazars séculaires — cinq jours pour toucher l'âme d'une ville
+        qui fut capitale de trois empires.
+    </p>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 1 — Mardi 12 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour1">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">01</div>
+            <div class="day-meta">
+                <div class="day-label">Mardi 12 Mai</div>
+                <div class="day-title">Arrivée et immersion douce</div>
+                <div class="day-areas">Aéroport · Sultanahmet · Kumkapı</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map1"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">15h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">✈️ Atterrissage à Istanbul</div>
+                    <div class="tl-desc">Douane, récupération des bagages, puis navette Havaist ou taxi vers Aksaray. Comptez 1h30 de trajet pour rejoindre Kadırga — vous serez installés vers 17h30. <br>Navette Havaist jusqu'à Aksaray, puis 10 min à pied. Ou taxi direct — négociez le prix avant de monter, environ 35-45€.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">17h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚶 Première balade vers Sultanahmet</div>
+                    <div class="tl-desc">Remontez à pied depuis l'hôtel vers la Place Sultanahmet. La lumière de fin d'après-midi sur la Mosquée Bleue et Sainte-Sophie est magnifique à cette heure — c'est votre premier regard sur l'horizon qui vous accompagnera tout le séjour.</div>
+                    <a href="https://images.google.com/search?q=Sultanahmet+Place+Istanbul+coucher+soleil" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">19h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🐟 Soirée à Kumkapı</div>
+                    <div class="tl-desc">Le quartier des pêcheurs, juste à côté de l'hôtel. Très animé le soir avec ses restaurants de poisson et ses musiciens de rue. Laissez-vous guider par les odeurs et les voix des serveurs qui accrochent les passants.</div>
+                    <a href="https://images.google.com/search?q=Kumkapi+Istanbul+restaurants+poisson" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-2">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/blue-mosque.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Premier aperçu du séjour</div>
+                    <div class="mon-name">Mosquée Bleue</div>
+                    <div class="mon-desc">
+                        Construite entre 1609 et 1616 par le sultan Ahmet Ier, elle est l'une des rares mosquées au monde à posséder six minarets. Son intérieur tapissé de 20 000 carreaux Iznik d'un bleu profond lui a valu son surnom occidental.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Meilleure heure: coucher de soleil pour les photos</li>
+                        <li>L'intérieur se visite sauf pendant les prières</li>
+                        <li>Six minarets — unique en Turquie pour une mosquée impériale</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Blue+Mosque+Istanbul+Sultan+Ahmed" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/eminonu.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Le quartier du soir</div>
+                    <div class="mon-name">Kumkapı & les quais</div>
+                    <div class="mon-desc">
+                        Ancien quartier de pêcheurs sur la mer de Marmara, Kumkapı s'anime chaque soir avec des dizaines de restaurants de fruits de mer et des musiciens traditionnels. Une introduction en douceur à l'hospitalité istanbuliote.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Restaurants de poisson frais à tous les prix</li>
+                        <li>Musique de rue jusqu'à tard le soir</li>
+                        <li>Ambiance populaire et authentique</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Kumkapi+Istanbul+nuit" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 2 — Mercredi 13 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour2">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">02</div>
+            <div class="day-meta">
+                <div class="day-label">Mercredi 13 Mai</div>
+                <div class="day-title">Les incontournables, avant la foule</div>
+                <div class="day-areas">Sultanahmet · Citerne · Sirkeci</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map2"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">10h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🕌 Sainte-Sophie en premier</div>
+                    <div class="tl-desc">Arrivez à l'ouverture pour éviter les groupes. Commencez par Sainte-Sophie, puis traversez la place vers la Mosquée Bleue. Deux visions du sacré, à 200 mètres l'une de l'autre.</div>
+                    <a href="https://images.google.com/search?q=Hagia+Sophia+interior+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🍽️ Déjeuner à l'Arasta Bazaar</div>
+                    <div class="tl-desc">Juste derrière la Mosquée Bleue, l'Arasta Bazaar abrite quelques bons restaurants à l'écart de la foule touristique. Meze, lahmacun, çorba — votre première vraie table turque.</div>
+                    <a href="https://images.google.com/search?q=Arasta+Bazaar+Istanbul+restaurant" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">13h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">💧 La Citerne Basilique</div>
+                    <div class="tl-desc">Descendez sous la ville. Cette citerne souterraine du VIe siècle, avec ses 336 colonnes reflétées dans l'eau et ses deux têtes de Méduse, est l'endroit le plus atmosphérique d'Istanbul — et l'un des plus insolites d'Europe.</div>
+                    <a href="https://images.google.com/search?q=Basilica+Cistern+Istanbul+Medusa" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">15h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚂 Gare de Sirkeci — Orient Express</div>
+                    <div class="tl-desc">Descendez à pied vers la mer jusqu'à la gare terminus de l'Orient Express. Son architecture Belle Époque de 1890, mélange de styles ottoman et européen, porte encore toute la nostalgie des grands voyages ferroviaires.</div>
+                    <a href="https://images.google.com/search?q=Sirkeci+station+Orient+Express+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/hagia-sophia.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Merveille byzantine · 537 apr. J-C.</div>
+                    <div class="mon-name">Sainte-Sophie</div>
+                    <div class="mon-desc">
+                        Pendant près de mille ans la plus grande église du monde, puis mosquée, puis musée, puis à nouveau mosquée depuis 2020 — son histoire résume à elle seule celle d'Istanbul. Son dôme de 55 mètres sans colonnes portantes reste un miracle d'ingénierie.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Le dôme qui "flotte" — effet lumineux unique</li>
+                        <li>Mosaïques byzantines du IXe siècle visibles à l'étage</li>
+                        <li>Arrivez à 10h, les groupes arrivent vers 11h</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Sainte+Sophie+interieur+mosaiques" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/cistern.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Souterrain mystérieux</div>
+                    <div class="mon-name">Citerne Basilique</div>
+                    <div class="mon-desc">
+                        Construite en 532 pour alimenter le Grand Palais en eau. 9 800 m² de galeries, 336 colonnes en marbre, et au fond de l'eau deux têtes de Méduse posées à l'envers dont on ne sait toujours pas l'origine exacte.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Fraîcheur bienvenue en mai (température constante)</li>
+                        <li>Les têtes de Méduse à la base des colonnes</li>
+                        <li>Lumières et reflets dans l'eau — très photographique</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Basilica+Cistern+columns+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/sirkeci.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Terminus mythique · 1890</div>
+                    <div class="mon-name">Gare de l'Orient Express</div>
+                    <div class="mon-desc">
+                        Terminus oriental du train le plus légendaire du monde depuis Paris. L'architecture mêle arcs en fer à cheval ottomans et verrière Belle Époque. L'Agatha Christie y aurait imaginé son "Crime de l'Orient Express".
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Architecture unique en son genre</li>
+                        <li>Musée ferroviaire à l'intérieur</li>
+                        <li>Vue sur la mer de Marmara depuis les quais</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Sirkeci+gare+Orient+Express" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 3 — Jeudi 14 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour3">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">03</div>
+            <div class="day-meta">
+                <div class="day-label">Jeudi 14 Mai · Jour férié</div>
+                <div class="day-title">L'Asie et la brise marine</div>
+                <div class="day-areas">Eminönü · Bosphore · Kadıköy · Moda</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map3"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">10h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚶 Marche jusqu'à Eminönü</div>
+                    <div class="tl-desc">Depuis Sultanahmet, descendez à pied vers les quais d'Eminönü. Ce trajet de 20 minutes vous fait traverser le bazar aux épices, l'odeur de poisson grillé sur les barques-restaurants et le bruit continu des mouettes.</div>
+                    <a href="https://images.google.com/search?q=Eminonu+quais+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">11h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">⛴️ Ferry vers Kadıköy — Le moment du voyage</div>
+                    <div class="tl-desc">20 à 30 minutes sur le Bosphore avec un thé en main sur le pont supérieur. La silhouette de la ville qui s'éloigne — minarets, dômes, palais — est l'une des plus belles images qu'on rapporte d'Istanbul. Payez avec votre IstanbulKart.</div>
+                    <a href="https://images.google.com/search?q=ferry+Bosphore+Istanbul+vapur" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏘️ Exploration de Kadıköy et Moda</div>
+                    <div class="tl-desc">L'Istanbul asiatique, jeune et bohème. Marché aux poissons de Kadıköy, galeries d'art, cafés en terrasse, librairies indépendantes. Marchez ensuite le long de la mer jusqu'à Moda — le quartier le plus détendu de la ville.</div>
+                    <a href="https://images.google.com/search?q=Kadikoy+Moda+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">17h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌅 Retour au coucher du soleil</div>
+                    <div class="tl-desc">Reprenez le ferry au coucher de soleil. Cette fois, c'est la silhouette européenne qui se révèle à mesure que vous approchez d'Eminönü — encore plus spectaculaire dans la lumière orangée de fin de journée.</div>
+                    <a href="https://images.google.com/search?q=Istanbul+sunset+Bosphorus+ferry" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-2">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/moda.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Rive asiatique · Bord de mer</div>
+                    <div class="mon-name">Moda</div>
+                    <div class="mon-desc">
+                        Le quartier le plus détendu de la rive asiatique. Ses ruelles calmes, ses cafés en terrasse et sa promenade en bord de mer face aux îles des Princes en font le refuge préféré des Istanbuliotes qui cherchent à souffler loin du tumulte du centre.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Promenade le long de la mer — vue sur les Îles des Princes</li>
+                        <li>Cafés et glaciers dans les ruelles résidentielles</li>
+                        <li>Ambiance très locale, pratiquement sans touristes</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Moda+Istanbul+bord+de+mer+promenade" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/kadikoy.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Rive asiatique · Moderne & bohème</div>
+                    <div class="mon-name">Kadıköy</div>
+                    <div class="mon-desc">
+                        Là où vit l'Istanbul d'aujourd'hui. Bars branchés, galeries d'art contemporain, marchés couverts plein de saveurs, et Moda Park avec sa vue sur les îles des Princes. Un contrepoint parfait aux monuments historiques.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Le marché aux poissons (Balık Pazarı)</li>
+                        <li>Street art omniprésent dans les ruelles</li>
+                        <li>Quartier jeune et cosmopolite</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Kadikoy+marche+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 4 — Vendredi 15 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour4">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">04</div>
+            <div class="day-meta">
+                <div class="day-label">Vendredi 15 Mai</div>
+                <div class="day-title">Bazars et splendeur ottomane</div>
+                <div class="day-areas">Grand Bazar · Süleymaniye · Pont de Galata · Karaköy</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map4"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">10h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏪 Le Grand Bazar</div>
+                    <div class="tl-desc">À 15 minutes à pied de votre hôtel. Plus qu'un marché : un labyrinthe de 4 000 boutiques sous des voûtes centenaires. Ne cherchez pas à tout voir — perdez-vous, et découvrez les hans (caravansérails) cachés comme le Zincirli Han.</div>
+                    <a href="https://images.google.com/search?q=Grand+Bazaar+Istanbul+voutes" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">13h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🕌 Mosquée de Süleyman le Magnifique</div>
+                    <div class="tl-desc">Pour beaucoup, la plus belle mosquée d'Istanbul — et la moins fréquentée. Construite par l'architecte Sinan entre 1550 et 1557, son jardin offre une vue panoramique incomparable sur la Corne d'Or et les toits de la ville.</div>
+                    <a href="https://images.google.com/search?q=Suleymaniye+Mosque+Istanbul+jardin" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">15h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌉 Pont de Galata à pied</div>
+                    <div class="tl-desc">Traversez le Pont de Galata en regardant les dizaines de pêcheurs alignés sur les deux rives. En dessous, des restaurants de poisson à des prix raisonnables. La vue sur Sainte-Sophie depuis le milieu du pont est saisissante.</div>
+                    <a href="https://images.google.com/search?q=Galata+Bridge+pecheurs+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">16h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🏙️ Karaköy et Tour de Galata</div>
+                    <div class="tl-desc">Le quartier branché d'Istanbul, avec ses galeries, ses cafés de spécialité et ses façades haussmanniennes du XIXe siècle. La Tour de Galata (XIVe siècle) domine tout le quartier — la vue du sommet vaut la montée.</div>
+                    <a href="https://images.google.com/search?q=Karakoy+Galata+tower+Istanbul" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/grand-bazaar.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">XVe siècle · 4 000 boutiques</div>
+                    <div class="mon-name">Grand Bazar</div>
+                    <div class="mon-desc">
+                        L'un des plus anciens marchés couverts du monde, en activité depuis 1461. 61 rues couvertes, 22 portes d'entrée, 4 000 boutiques. Mais la vraie découverte, ce sont les hans intérieurs — des caravansérails ouvrant sur des cours silencieuses.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Cherchez le Zincirli Han et le Sandal Bedesten</li>
+                        <li>Le marchandage est une pratique normale</li>
+                        <li>Café turc offert si vous regardez les tapis</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Grand+Bazaar+Istanbul+inside" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/suleymaniye.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Chef-d'œuvre de Sinan · 1557</div>
+                    <div class="mon-name">Mosquée Süleymaniye</div>
+                    <div class="mon-desc">
+                        L'architecte Sinan, qui bâtit plus de 350 monuments dans l'Empire ottoman, considérait cette mosquée comme son chef-d'œuvre. Moins fréquentée que la Mosquée Bleue, elle offre une visite plus sereine et une vue imprenable depuis son jardin.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Jardin avec tombeaux de Soliman et de Roxelane</li>
+                        <li>Vue panoramique sur la Corne d'Or</li>
+                        <li>Moins touristique — atmosphère de recueillement</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Suleymaniye+Mosque+interior+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/galata-bridge.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Corne d'Or · Karaköy</div>
+                    <div class="mon-name">Pont de Galata</div>
+                    <div class="mon-desc">
+                        Le pont qui relie la vieille Istanbul à la rive moderne. Sur ses garde-corps, des dizaines de pêcheurs lancent leurs lignes dans la Corne d'Or — une image intemporelle de la ville. En dessous, des restaurants de poisson plein de bruit et de vie.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Restaurants au niveau inférieur — moins chers</li>
+                        <li>Traversée idéale au coucher de soleil</li>
+                        <li>Vue sur Sainte-Sophie depuis le milieu</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Galata+Bridge+Istanbul+sunset" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     JOUR 5 — Samedi 16 Mai
+════════════════════════════════════════ -->
+<section class="day" id="jour5">
+    <div class="day-inner">
+
+        <div class="day-header">
+            <div class="day-num">05</div>
+            <div class="day-meta">
+                <div class="day-label">Samedi 16 Mai</div>
+                <div class="day-title">Couleurs et nostalgie</div>
+                <div class="day-areas">Fener · Balat · Église Bulgare · Dernier soir</div>
+            </div>
+        </div>
+
+        <div class="day-map" id="map5"></div>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">10h30</div>
+                <div class="tl-body">
+                    <div class="tl-title">🚌 Bus vers Fener</div>
+                    <div class="tl-desc">Prenez la ligne 99 ou 99A depuis Eminönü vers l'arrêt Fener (20-30 min). Ou le petit ferry qui longe la Corne d'Or — beaucoup plus agréable et scenic.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">11h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">⛪ Église en Fer Bulgare</div>
+                    <div class="tl-desc">Sur les quais de la Corne d'Or, l'Église Saint-Étienne est entièrement construite en fer fondu — la seule au monde. Commandée en 1871 à Vienne, elle fut assemblée sur place comme un kit préfabriqué. Un chef-d'œuvre architectural totalement inattendu.</div>
+                    <a href="https://images.google.com/search?q=Bulgarian+Iron+Church+Istanbul+Saint+Stephen" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">12h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🎨 Exploration de Balat et Fener</div>
+                    <div class="tl-desc">Les anciens quartiers juifs et grecs d'Istanbul, préservés hors du temps. Maisons aux façades colorées qui s'effritent, brocanteurs, cafés dans des cours intérieures, enfants qui jouent. C'est l'Istanbul que peu de touristes voient.</div>
+                    <a href="https://images.google.com/search?q=Balat+Fener+Istanbul+maisons+colorees" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">19h00</div>
+                <div class="tl-body">
+                    <div class="tl-title">🌃 Dernier soir en rooftop</div>
+                    <div class="tl-desc">Montez sur un rooftop de Sultanahmet pour une dernière vue sur les minarets illuminés. Avec un verre de raki ou un çay, regardez la ville s'endormir une dernière fois sous vos yeux.</div>
+                    <a href="https://images.google.com/search?q=Istanbul+rooftop+bar+Sultanahmet+nuit" target="_blank" class="tl-link">Photos →</a>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Dimanche</div>
+                <div class="tl-body">
+                    <div class="tl-title">✈️ Départ 5h00</div>
+                    <div class="tl-desc">Demandez à l'hôtel de réserver un taxi ou transfert privé la veille. La ville est vide à cette heure — comptez 45 à 60 min jusqu'à l'aéroport IST.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="monuments cols-3">
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/fener.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Ancien quartier grec</div>
+                    <div class="mon-name">Fener</div>
+                    <div class="mon-desc">
+                        Fener fut pendant des siècles le quartier de la haute bourgeoisie grecque d'Istanbul. Ses imposantes maisons patriciennes en bois dominent la Corne d'Or, et le Patriarcat œcuménique de Constantinople y siège toujours dans une discrétion presque secrète.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Patriarcat œcuménique — cœur de l'Orthodoxie mondiale</li>
+                        <li>Grandes maisons grecques du XIXe siècle</li>
+                        <li>Vue sur la Corne d'Or depuis les rues en pente</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Fener+Istanbul+quartier+grec" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/balat.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Ancien quartier juif</div>
+                    <div class="mon-name">Balat</div>
+                    <div class="mon-desc">
+                        Longtemps cœur de la communauté juive séfarade d'Istanbul depuis l'accueil des exilés d'Espagne au XVe siècle. Ses ruelles en pente sont bordées de maisons en bois aux couleurs vives qui s'effritent avec grâce entre brocanteurs et cafés de quartier.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Les maisons colorées — un décor hors du temps</li>
+                        <li>Brocanteurs et antiquaires à chaque coin</li>
+                        <li>Cafés de quartier sans touristes</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Balat+Istanbul+colorful+houses" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+            <div class="monument tall">
+                <div class="mon-photo" style="background-image: url('img/eminonu.jpg')"></div>
+                <div class="mon-overlay">
+                    <div class="mon-badge">Unique au monde · 1871</div>
+                    <div class="mon-name">Église Bulgare en Fer</div>
+                    <div class="mon-desc">
+                        L'église Saint-Étienne des Bulgares est entièrement construite en fonte préfabriquée à Vienne et assemblée sur les rives de la Corne d'Or. Aucune autre église au monde ne partage cette particularité. Peu visitée, étrangement silencieuse.
+                    </div>
+                    <ul class="mon-highlights">
+                        <li>Seule église entièrement en métal au monde</li>
+                        <li>Intérieur doré contrastant avec l'extérieur sombre</li>
+                        <li>Pratiquement vide — vous y serez seul</li>
+                    </ul>
+                    <a href="https://images.google.com/search?q=Saint+Stephen+Bulgarian+Church+Istanbul" target="_blank" class="mon-link">Plus de photos →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-title">Bon voyage</div>
+    <p>Istanbul · 12 — 17 Mai 2026</p>
+    <p style="margin-top: 8px; opacity: 0.5;">Entre l'Europe et l'Asie, là où l'histoire respire encore</p>
+</footer>
+
+<script>
+// Sidebar toggle
+(function () {
+    var sidebar = document.getElementById('sidebar');
+    var toggle  = document.getElementById('sidebarToggle');
+    toggle.addEventListener('click', function () {
+        var open = sidebar.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-label', open ? 'Fermer les voyages' : 'Ouvrir les voyages');
+    });
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+        if (sidebar.classList.contains('open') &&
+            !sidebar.contains(e.target) &&
+            !toggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+            toggle.classList.remove('open');
+        }
+    });
+})();
+
+window.addEventListener('load', function () {
+
+    // Dark tiles (CartoDB Dark Matter)
+    const tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+    const tileAttr = '© OpenStreetMap © CARTO';
+
+    function pin(n) {
+        return L.divIcon({
+            className: '',
+            html: '<div class="lpin">' + n + '</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+            popupAnchor: [0, -20]
+        });
+    }
+
+    function buildMap(id, stops, ferryRoute) {
+        var map = L.map(id, { scrollWheelZoom: false, zoomControl: true });
+        L.tileLayer(tileUrl, { attribution: tileAttr, maxZoom: 19 }).addTo(map);
+
+        var coords = stops.map(function (s) { return [s.lat, s.lng]; });
+
+        // Route polyline
+        L.polyline(coords, {
+            color: '#d4644a',
+            weight: 2.5,
+            opacity: 0.75,
+            dashArray: '8 10'
+        }).addTo(map);
+
+        // Optional ferry dashed line (different style)
+        if (ferryRoute) {
+            L.polyline(ferryRoute, {
+                color: '#c9a255',
+                weight: 2,
+                opacity: 0.8,
+                dashArray: '4 8'
+            }).addTo(map);
+        }
+
+        // Numbered markers
+        stops.forEach(function (s) {
+            var m = L.marker([s.lat, s.lng], { icon: pin(s.n) }).addTo(map);
+            var html = '<b>' + s.name + '</b>';
+            if (s.time) html = '<span style="color:#d4644a;font-size:11px">' + s.time + '</span><br>' + html;
+            if (s.desc) html += '<br><span style="color:#8a847c">' + s.desc + '</span>';
+            m.bindPopup(html, { maxWidth: 220 });
+        });
+
+        map.fitBounds(L.latLngBounds(coords).pad(0.18));
+        return map;
+    }
+
+    // ── JOUR 1 ──────────────────────────────────────────
+    buildMap('map1', [
+        { n:1, lat:41.0047, lng:28.9748, name:'Hôtel Kadırga',         time:'17h30', desc:'Votre base pour tout le séjour' },
+        { n:2, lat:41.0055, lng:28.9768, name:'Place Sultanahmet',      time:'17h30', desc:'Mosquée Bleue au coucher du soleil' },
+        { n:3, lat:41.0038, lng:28.9690, name:'Kumkapı',                time:'19h00', desc:'Restaurants de poisson, musiciens de rue' }
+    ]);
+
+    // ── JOUR 2 ──────────────────────────────────────────
+    buildMap('map2', [
+        { n:1, lat:41.0086, lng:28.9802, name:'Sainte-Sophie',          time:'10h00', desc:'En premier avant la foule' },
+        { n:2, lat:41.0055, lng:28.9768, name:'Mosquée Bleue',          time:'10h45', desc:'Sultan Ahmed Camii' },
+        { n:3, lat:41.0058, lng:28.9779, name:'Arasta Bazaar',          time:'12h00', desc:'Déjeuner tranquille' },
+        { n:4, lat:41.0079, lng:28.9787, name:'Citerne Basilique',      time:'13h30', desc:'Colonnes et têtes de Méduse' },
+        { n:5, lat:41.0178, lng:28.9747, name:'Gare de Sirkeci',        time:'15h30', desc:'Terminus de l\'Orient Express' }
+    ]);
+
+    // ── JOUR 3 — traversée Bosphore ─────────────────────
+    buildMap('map3', [
+        { n:1, lat:41.0175, lng:28.9736, name:'Eminönü',               time:'10h30', desc:'Embarcadère du ferry public (Vapur)' },
+        { n:2, lat:40.9929, lng:29.0216, name:'Kadıköy',               time:'11h00', desc:'Rive asiatique — marché, galeries' },
+        { n:3, lat:40.9858, lng:29.0290, name:'Moda',                  time:'14h00', desc:'Balade en bord de mer, terrasses' }
+    ],
+    // Trajet ferry Bosphore (aller + retour)
+    [
+        [41.0175, 28.9736],
+        [41.010,  28.988],
+        [40.9929, 29.0216]
+    ]);
+
+    // ── JOUR 4 ──────────────────────────────────────────
+    buildMap('map4', [
+        { n:1, lat:41.0163, lng:28.9695, name:'Grand Bazar',            time:'10h00', desc:'4 000 boutiques et hans ottomans' },
+        { n:2, lat:41.0163, lng:28.9636, name:'Mosquée Süleymaniye',    time:'13h00', desc:'Chef-d\'œuvre de l\'architecte Sinan' },
+        { n:3, lat:41.0232, lng:28.9727, name:'Pont de Galata',         time:'15h00', desc:'Pêcheurs et vue sur Sainte-Sophie' },
+        { n:4, lat:41.0273, lng:28.9729, name:'Karaköy',                time:'16h00', desc:'Quartier branché, Tour de Galata' }
+    ]);
+
+    // ── JOUR 5 ──────────────────────────────────────────
+    buildMap('map5', [
+        { n:1, lat:41.0175, lng:28.9736, name:'Eminönü',               time:'10h30', desc:'Bus 99 / 99A ou ferry Corne d\'Or' },
+        { n:2, lat:41.0335, lng:28.9424, name:'Église en Fer Bulgare', time:'11h00', desc:'Saint-Étienne — unique au monde' },
+        { n:3, lat:41.0365, lng:28.9410, name:'Balat',                 time:'11h30', desc:'Maisons colorées, brocanteurs' },
+        { n:4, lat:41.0340, lng:28.9468, name:'Fener',                 time:'13h00', desc:'Ancien quartier grec, Patriarcat' }
+    ]);
+
+});
+</script>
+</body>
+</html>
